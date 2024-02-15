@@ -3,7 +3,7 @@ const db = require("../../database/prisma");
 const getCategories = async (_req, res) => {
   const categories = await db.category.findMany({
     include: {
-      Article: true,
+      article: true,
     },
   });
 
