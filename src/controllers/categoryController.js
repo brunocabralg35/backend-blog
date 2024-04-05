@@ -1,4 +1,4 @@
-const db = require("../../database/prisma");
+const db = require("../database/prisma");
 
 const getCategories = async (_req, res) => {
   const categories = await db.category.findMany({
@@ -7,14 +7,14 @@ const getCategories = async (_req, res) => {
     },
   });
 
-  return res.status(200).json(categories);
+  return res.status(200).send(categories);
 };
 
 const createCategory = async (req, res) => {
   const { title } = req.body;
 
   if (title === "" || title === undefined) {
-    return res.status(400).json({
+    return res.status(400).send({
       message: "Title field is required",
     });
   }
@@ -25,7 +25,7 @@ const createCategory = async (req, res) => {
     },
   });
 
-  return res.status(201).json({
+  return res.status(201).send({
     message: `Category ${createdCategory.title} successfully created!`,
   });
 };
@@ -36,7 +36,7 @@ const updateCategory = async (req, res) => {
   const { title } = req.body;
 
   if (title === "" || title === undefined) {
-    return res.status(400).json({
+    return res.status(400).send({
       message: "Title field is required",
     });
   }
@@ -50,7 +50,7 @@ const updateCategory = async (req, res) => {
     },
   });
 
-  return res.status(201).json({
+  return res.status(201).send({
     message: `Category ${updatedCategory.title} successfully updated!`,
   });
 };
@@ -66,7 +66,7 @@ const deleteCategory = async (req, res) => {
     },
   });
 
-  return res.status(200).json({
+  return res.status(200).send({
     message: `Category ${deletedCategory.title} successfully deleted!`,
   });
 };

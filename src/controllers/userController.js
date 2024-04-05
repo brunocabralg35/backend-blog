@@ -1,10 +1,10 @@
-const db = require("../../database/prisma");
+const db = require("../database/prisma");
 const bcrypt = require("bcryptjs");
 
 const getUsers = async (_req, res) => {
   const users = await db.user.findMany();
 
-  return res.status(200).json(users);
+  return res.status(200).send(users);
 };
 
 const deleteUser = async (req, res) => {
@@ -17,7 +17,7 @@ const deleteUser = async (req, res) => {
     },
   });
 
-  return res.status(200).json({
+  return res.status(200).send({
     message: `User ${deletedUser.email} successfully deleted!`,
   });
 };
@@ -31,7 +31,7 @@ const createUser = async (req, res) => {
     password === "" ||
     password === undefined
   ) {
-    return res.status(400).json({
+    return res.status(400).send({
       message: "Email and password field are required",
     });
   }
@@ -43,7 +43,7 @@ const createUser = async (req, res) => {
   });
 
   if (isAlreadyUsed) {
-    return res.status(400).json({
+    return res.status(400).send({
       message: "Email already registered",
     });
   }
@@ -60,7 +60,7 @@ const createUser = async (req, res) => {
 
   return res
     .status(201)
-    .json({ message: `User ${createdUser.email} successfully created!` });
+    .send({ message: `User ${createdUser.email} successfully created!` });
 };
 
 const updateUser = async (req, res) => {
@@ -74,7 +74,7 @@ const updateUser = async (req, res) => {
     password === "" ||
     password === undefined
   ) {
-    return res.status(400).json({
+    return res.status(400).send({
       message: "Email and password field are required",
     });
   }
@@ -86,7 +86,7 @@ const updateUser = async (req, res) => {
   });
 
   if (!emailExist) {
-    return res.status(400).json({
+    return res.status(400).send({
       message: "Email does not exist in our database!",
     });
   }
@@ -106,7 +106,7 @@ const updateUser = async (req, res) => {
 
   return res
     .status(201)
-    .json({ message: `User ${updatedUser.email} successfully updated!` });
+    .send({ message: `User ${updatedUser.email} successfully updated!` });
 };
 
 const login = async (req, res) => {
@@ -124,13 +124,13 @@ const login = async (req, res) => {
     password === "" ||
     password === undefined
   ) {
-    return res.status(400).json({
+    return res.status(400).send({
       message: "Email and password field are required",
     });
   }
 
   if (!userExist) {
-    return res.status(400).json({
+    return res.status(400).send({
       message: "Email does not exist in our database!",
     });
   }
@@ -138,7 +138,7 @@ const login = async (req, res) => {
   const passwordCompare = bcrypt.compareSync(password, userExist.password);
 
   if (!passwordCompare) {
-    return res.status(400).json({
+    return res.status(400).send({
       message: "Incorrect password!",
     });
   }
@@ -148,11 +148,11 @@ const login = async (req, res) => {
     email: userExist.email,
   };
 
-  return res.status(200).json({ loggedUser: req.session.user });
+  return res.status(200).send({ loggedUser: req.session.user });
 };
 
 const logout = async () => {
-  return req.session.user = undefined;
+  return (req.session.user = undefined);
 };
 
 module.exports = {

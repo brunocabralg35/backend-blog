@@ -1,4 +1,4 @@
-const db = require("../../database/prisma");
+const db = require("../database/prisma");
 
 const getArticles = async (_req, res) => {
   const articles = await db.article.findMany({
@@ -10,7 +10,7 @@ const getArticles = async (_req, res) => {
     },
   });
 
-  return res.status(200).json(articles);
+  return res.status(200).send(articles);
 };
 
 const createArticle = async (req, res) => {
@@ -25,7 +25,7 @@ const createArticle = async (req, res) => {
     category_id === undefined ||
     category_id === null
   ) {
-    return res.status(400).json({
+    return res.status(400).send({
       message: "Title field is required",
     });
   }
@@ -38,7 +38,7 @@ const createArticle = async (req, res) => {
     },
   });
 
-  return res.status(200).json({
+  return res.status(200).send({
     message: `Article ${createdArticle.title} - ${createdArticle.category_id} successfully created`,
   });
 };
@@ -54,7 +54,7 @@ const deleteArticle = async (req, res) => {
     },
   });
 
-  return res.status(200).json({
+  return res.status(200).send({
     message: `Article ${deletedArticle.title} successfully deleted!`,
   });
 };
@@ -73,7 +73,7 @@ const updateArticle = async (req, res) => {
     category_id === undefined ||
     category_id === null
   ) {
-    return res.status(400).json({
+    return res.status(400).send({
       message: "Title field is required",
     });
   }
@@ -89,7 +89,7 @@ const updateArticle = async (req, res) => {
     },
   });
 
-  return res.status(201).json({
+  return res.status(201).send({
     message: `Article ${updatedArticle.title} successfully updated!`,
   });
 };

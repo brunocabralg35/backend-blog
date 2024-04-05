@@ -19,7 +19,7 @@ const {
   login,
   logout,
 } = require("./controllers/userController");
-const adminAuth = require("../middlewares/adminAuth");
+const adminAuth = require("./middlewares/adminAuth");
 
 const router = express.Router();
 
